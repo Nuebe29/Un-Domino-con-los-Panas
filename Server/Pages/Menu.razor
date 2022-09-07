@@ -1,0 +1,226 @@
+﻿@using Engine;
+
+<h1>Configuración</h1>
+<br/>
+
+<h3>Personalizar Jugadores</h3>
+<br/>
+
+<div>
+    <input type="checkbox" oninput="@PCheck[0] = !PCheck[0]"> Jugador 0 
+    <input type="text" @bind="PNames[0]"/> 
+    <br/>
+        Estrategia:
+        <br/> <input type="radio" name="estr0" oninput="@Estr[0] = 0"> Aleatoria
+        <br/> <input type="radio" name="estr0" oninput="@Estr[0] = 1"> Bota Gordas
+        <br/> <input type="radio" name="estr0" oninput="@Estr[0] = 2"> Otra
+    <br/><br/>
+    <input type="checkbox" oninput="@PCheck[1] = !PCheck[1]"> Jugador 1 
+    <input type="text" @bind="PNames[1]"/> 
+    <br/>
+        Estrategia:
+        <br/> <input type="radio" name="estr1" oninput="@Estr[1] = 0"> Aleatoria
+        <br/> <input type="radio" name="estr1" oninput="@Estr[1] = 1"> Bota Gordas
+        <br/> <input type="radio" name="estr1" oninput="@Estr[1] = 2"> Otra
+    <br/><br/>
+    <input type="checkbox" oninput="@PCheck[2] = !PCheck[2]"> Jugador 2 
+    <input type="text" @bind="PNames[2]"/> 
+    <br/>
+        Estrategia:
+        <br/> <input type="radio" name="estr2" oninput="@Estr[2] = 0"> Aleatoria
+        <br/> <input type="radio" name="estr2" oninput="@Estr[2] = 1"> Bota Gordas
+        <br/> <input type="radio" name="estr2" oninput="@Estr[2] = 2"> Otra
+    <br/><br/>
+    <input type="checkbox" oninput="@PCheck[3] = !PCheck[3];"> Jugador 3 
+    <input type="text" @bind="PNames[3]"/> 
+    <br/>
+        Estrategia:
+        <br/> <input type="radio" name="estr3" oninput="@Estr[3] = 0"> Aleatoria
+        <br/> <input type="radio" name="estr3" oninput="@Estr[3] = 1"> Bota Gordas
+        <br/> <input type="radio" name="estr3" oninput="@Estr[3] = 2"> Otra
+</div>
+<br/><br/>
+
+<div>
+    <h3>Estilo de Juego</h3>
+    
+    <input type="radio" name="Matcher" oninput="@Mat = 0"> Clásico <br/>
+    <input type="radio" name="Matcher" oninput="@Mat = 1"> Longana <br/>
+    <input type="radio" name="Matcher" oninput="@Mat = 2"> Distancia 2 <br/>
+</div>
+
+<div>
+    <h3>Condición de victoria</h3>
+    
+    <input type="radio" name="WinCondition" oninput="@Wc = 0"> Clásica <br/>
+    <input type="radio" name="WinCondition" oninput="@Wc = 1"> Por número de fichas <br/>
+    <input type="radio" name="WinCondition" oninput="@Wc = 2"> Por cantidad de pases <br/>
+</div>
+
+<div>
+    <h3>Condición de finalización</h3>
+    
+    <input type="radio" name="EndCondition" oninput="@Ec = 0"> Clásica <br/>
+    <input type="radio" name="EndCondition" oninput="@Ec = 1"> Por límite de puntos  
+    <input type="number" name="limit" value="50"><br/>
+    <input type="radio" name="EndCondition" oninput="@Ec = 2"> Por cantidad de pases   
+    <input type="number" name="PassLimit" value="3"><br/>
+</div>
+
+<div>
+    <h3>Orden de los jugadores</h3>
+    
+    <input type="radio" name="Turner" oninput="@Tur = 0"> Hacia la derecha <br/>
+    <input type="radio" name="Turner" oninput="@Tur = 1"> Hacia la izquierda <br/>
+    <input type="radio" name="Turner" oninput="@Tur = 2"> Aleatorio <br/>
+</div>
+
+<div>
+    <h3>Tipo de Mazo</h3>
+    
+    <input type="radio" name="Generador" oninput="@Tur = 0"> Mazo Clásico <br/>
+    <input type="radio" name="Generador" oninput="@Tur = 1"> Fichas Pares <br/>
+    <input type="radio" name="Generador" oninput="@Tur = 2"> Fichas Primas <br/>
+    <br/> Tope del Mazo
+    <input type="number" @bind="N"/><br/>
+    Cantidad de fichas por mano
+    <input type="number" @bind="C"/>
+</div>
+
+<br/>
+<input type="button" value="Aceptar" onclick="@PasarParámetros()">
+
+
+@code 
+{
+    int Mat { get; set; }
+    int Wc { get; set; }
+    int Ec { get; set; }
+    int Tur { get; set; }
+    int Gen { get; set; }
+    bool[] PCheck = new bool[4];
+    int[] Estr = new int[4];
+    string[] PNames = new string[4];
+
+    IMatcher<int> Matcher { get; set; }
+    IWincondition<int> WinCondición { get; set; }
+    IEndcondition<int> Endcondition { get; set; }
+    ITurner<int> Turner { get; set; }
+    IGenerador<int> Generador { get; set; }
+    int N { get; set; }
+    int C { get; set; }
+
+    [Parameter]
+    public Partida<int> P { get; set; }
+
+    private bool PasarParámetros()
+    {
+        switch (Mat)
+        {
+            case 0:
+                Matcher = new MatcherClasico();
+                break;
+            case 1:
+                Matcher = new MatcherLongana();
+                break;
+            case 2:
+                Matcher = new MatcherDistancia2();
+                break;
+            default:
+                Matcher = new MatcherClasico();
+                break;
+        }
+        
+        switch (Wc)
+        {
+            case 0:
+                WinCondición = new GanadorCálsico(); 
+                break;
+            case 1:
+                WinCondición = new GanadorPorFichas(); 
+                break;
+            case 2:
+                WinCondición = new GanadorPorPases(); 
+                break;
+            default:
+                WinCondición = new GanadorCálsico();  
+                break;
+        }
+        
+        switch (Ec)
+        {
+            case 0:
+                Endcondition = new EndconditionClasico();
+                break;
+            case 1:
+                Endcondition = new EndconditionPorPuntos50(); 
+                break;
+            case 2:
+                Endcondition = new EndconditionPorPases3(); 
+                break;
+            default:
+                Endcondition = new EndconditionClasico(); 
+                break;
+        }
+        
+        switch (Tur)
+        {
+            case 0:
+                Turner = new TurnerClasico(); 
+                break;
+            case 1:
+                Turner = new TurnerContrario(); 
+                break;
+            case 2:
+                Turner = new TurnerRandom(); 
+                break;
+            default:
+                Turner = new TurnerClasico();
+                break;
+        }
+        
+        switch (Gen)
+        {
+            case 0:
+                Generador = new Generadorclasico(); 
+                break;
+            case 1:
+                Generador = new GeneradorPares(); 
+                break;
+            case 2:
+                Generador = new GeneradorPrimos(); 
+                break;
+            default:
+                Generador = new Generadorclasico();
+                break;
+        }
+
+        for (int i = 0; i < PCheck.Length; i++)
+        {
+            if (PCheck[i])
+            {
+                Estrategia<int> E;
+                switch (Estr[i])
+                {
+                    case 0:
+                        E = Estrategias<int>.Estrategiarandom; 
+                        break;
+                    case 1:
+                        E = Estrategias<int>.Botagordas; 
+                        break;
+                    default:
+                        E = Estrategias<int>.Estrategiarandom;
+                        break;
+                }
+                
+                P.Players.Add(new Player<int>(E,PNames[i]));
+            }
+        }
+        
+        P.RecibeParametros(Endcondition, WinCondición, Matcher, new Dealer<int>(), Generador, P.Players, N, Turner, C );
+
+        return true;
+    }
+   
+
+}
