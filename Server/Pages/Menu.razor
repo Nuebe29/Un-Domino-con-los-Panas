@@ -13,7 +13,7 @@
     Estrategia:
     <br/> <input type="radio" name="estr0" @oninput="() => { Estr[0] = 0; }"> Aleatoria
     <br/> <input type="radio" name="estr0" @oninput="() => { Estr[0] = 1; }"> Bota Gordas
-    <br/> <input type="radio" name="estr0" @oninput="() => { Estr[0] = 2; }"> Otra
+    <br/> <input type="radio" name="estr0" @oninput="() => { Estr[0] = 2; }"> No Pasarse
     <br/><br/>
     <input type="checkbox" @oninput="() => { PCheck[1] = !PCheck[1]; }"> Jugador 1
     <input type="text" @bind="PNames[1]"/>
@@ -21,7 +21,7 @@
     Estrategia:
     <br/> <input type="radio" name="estr1" @oninput="() => { Estr[1] = 0; }"> Aleatoria
     <br/> <input type="radio" name="estr1" @oninput="() => { Estr[1] = 1; }"> Bota Gordas
-    <br/> <input type="radio" name="estr1" @oninput="() => { Estr[1] = 2; }"> Otra
+    <br/> <input type="radio" name="estr1" @oninput="() => { Estr[1] = 2; }"> No Pasarse
     <br/><br/>
     <input type="checkbox" @oninput="() => { PCheck[2] = !PCheck[2]; }"> Jugador 2
     <input type="text" @bind="PNames[2]"/>
@@ -29,7 +29,7 @@
     Estrategia:
     <br/> <input type="radio" name="estr2" @oninput="() => { Estr[2] = 0; }"> Aleatoria
     <br/> <input type="radio" name="estr2" @oninput="() => { Estr[2] = 1; }"> Bota Gordas
-    <br/> <input type="radio" name="estr2" @oninput="() => { Estr[2] = 2; }"> Otra
+    <br/> <input type="radio" name="estr2" @oninput="() => { Estr[2] = 2; }"> No Pasarse
     <br/><br/>
     <input type="checkbox" @oninput="() => { PCheck[3] = !PCheck[3]; }"> Jugador 3
     <input type="text" @bind="PNames[3]"/>
@@ -37,7 +37,7 @@
     Estrategia:
     <br/> <input type="radio" name="estr3" @oninput="() => { Estr[3] = 0; }"> Aleatoria
     <br/> <input type="radio" name="estr3" @oninput="() => { Estr[3] = 1; }"> Bota Gordas
-    <br/> <input type="radio" name="estr3" @oninput="() => { Estr[3] = 2; }"> Otra
+    <br/> <input type="radio" name="estr3" @oninput="() => { Estr[3] = 2; }"> No Pasarse
 </div>
 <br/><br/>
 
@@ -54,7 +54,7 @@
 
     <input type="radio" name="WinCondition" @oninput="() => { Wc = 0; }"> Clásica <br/>
     <input type="radio" name="WinCondition" @oninput="() => { Wc = 1; }"> Por número de fichas <br/>
-    <input type="radio" name="WinCondition" @oninput="() => { Wc = 2; }"> Por cantidad de pases <br/>
+    <input type="radio" name="WinCondition" @oninput="() => { Wc = 2; }"> Por cantidad de jugadas <br/>
 </div>
 
 <div>
@@ -62,9 +62,8 @@
 
     <input type="radio" name="EndCondition" @oninput="() => { Ec = 0; }"> Clásica <br/>
     <input type="radio" name="EndCondition" @oninput="() => { Ec = 1; }"> Por límite de puntos
-    <input type="number" name="limit" value="50"><br/>
-    <input type="radio" name="EndCondition" @oninput="() => { Ec = 2; }"> Por cantidad de pases
-    <input type="number" name="PassLimit" value="3"><br/>
+    <input type="number" name="limit" @bind="Lim" value="50"><br/>
+    <input type="radio" name="EndCondition" @oninput="() => { Ec = 2; }"> Por cantidad de pases <br/>
 </div>
 
 <div>
@@ -98,6 +97,7 @@
     int Ec { get; set; }
     int Tur { get; set; }
     int Gen { get; set; }
+    int Lim { get; set; }
     bool[] PCheck = new bool[4];
     int[] Estr = new int[4];
     string[] PNames = new string[4];
@@ -140,7 +140,7 @@
                 WinCondición = new GanadorPorFichas();
                 break;
             case 2:
-                WinCondición = new GanadorPorPases();
+                WinCondición = new GanadorPorJugadas();
                 break;
             default:
                 WinCondición = new GanadorCálsico();
@@ -153,7 +153,7 @@
                 Endcondition = new EndconditionClasico();
                 break;
             case 1:
-                Endcondition = new EndconditionPorPuntos50();
+                Endcondition = new EndconditionPorPuntos50(Lim);
                 break;
             case 2:
                 Endcondition = new EndconditionPorPases3();
@@ -207,6 +207,9 @@
                         break;
                     case 1:
                         E = Estrategias<int>.Botagordas;
+                        break;
+                    case 2:
+                        E = Estrategias<int>.NoPasarse;
                         break;
                     default:
                         E = Estrategias<int>.Estrategiarandom;

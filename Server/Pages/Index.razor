@@ -21,22 +21,39 @@ else
         <div>
             <input type="button" value="Siguiente Turno" @onclick="CorrerPartida"/>
         </div>
+       
+        <div style="text-align: center">
+         @{ int count = 1; }
         @foreach (var nodo in _partida.Tablero)
         {
-            if (nodo.Hoja.Turno != -1)
+            if (nodo.Hoja.Turno >= 0)
             {
-                <Ficha Board="nodo"></Ficha>
+                <Ficha Board="nodo" colm="count"></Ficha>
             }
+            count += 1;
         }
+        </div><br/><br/>
+        
+        <div>@_partida.Players[_partida.CurrentPlayer].name</div><br/>
+        <div>
+            @foreach (var ficha in _partida.Manos[_partida.CurrentPlayer].Contenido)
+            {
+                <Ficha2 F="ficha"></Ficha2>
+            }
+        </div>                                                         
     }
 
     else
     {
         <div>
-            La partida ha terminado.
+            Ranking:<br/>
+            @for (int i = 0; i < _partida.Players.Count; i++)
+            {
+                <div>@i  @_partida.Players[i].name</div>
+            }
         </div>
     }
-    <div style="text-align: center">
+    <br/><div style="text-align: center">
        <input type="button" value="Finalizar Patrida" @onclick="Cambiar">
    </div> 
 }
@@ -45,17 +62,17 @@ else
 {
     private bool isPlaying;
     private bool isEnded;
-    private int turno;
     private Partida<int> _partida {get; set;}
 
     void Cambiar()
     {
         isPlaying = !isPlaying;
+        isEnded = false;
     }
 
     void CorrerPartida()
     {
-        isEnded = _partida.Run(turno++);
+        isEnded = _partida.RunTurn();
     }
     
 

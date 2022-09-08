@@ -62,3 +62,42 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.Ficha
+{
+    display: inline-grid;
+}
+
+.Cara1
+{
+    grid-row: 1;
+    grid-column: 1;
+    display: flex;
+    width: 45px;
+    height: 35px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    background-color: #1861ac;
+    justify-content: center;
+    align-items: center;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.Cara2
+{
+    grid-row: 1;
+    grid-column: 2;
+    display: flex;
+    width: 45px;
+    height: 35px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    background-color: #1861ac;
+    justify-content: center;
+    align-items: center;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}    
