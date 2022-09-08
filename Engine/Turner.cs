@@ -1,27 +1,32 @@
 namespace Engine;
-public interface ITurner<T>{
-    public int Turno(Tablero<T> tablero, int turno, int players);
+public interface ITurner<T>
+{
+    public IEnumerable<int> Turno(int players);
 }
 public class TurnerClasico : ITurner<int>
 {
-    public int Turno(Tablero<int> tablero, int turno, int players)
+    public IEnumerable<int> Turno(int players)
     {
-        return turno%(players);
+        int count = 0;
+        while (true)
+        {
+            if (count == players) count = 0;
+            yield return count;
+            count++;
+        }
     }
 }
 public class TurnerRandom : ITurner<int>
 {
-    public int Turno(Tablero<int> tablero, int turno, int players)
+    public IEnumerable<int> Turno(int players)
     {
-     Random r = new Random();
-    return r.Next(players);
+        Random r = new Random();
+        while (true) yield return r.Next(players);
     }
 }
 
 public class TurnerContrario : ITurner<int>
 {
-    public int Turno(Tablero<int> tablero, int turno, int players)
-    {
-        return (turno+players-1)%players;
-    }
+    public IEnumerable<int> Turno(int players)
+        => new TurnerClasico().Turno(players).Select(x => players - x - 1);
 }

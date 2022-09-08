@@ -19,8 +19,8 @@ public interface IMatcher<T>
                     {
                         if (PuedeSalir(ficha))
                         {
-                            jugadas.Add(new Movimiento<T>(ficha.Cara2, ficha, t.Hoja, false));
-                            jugadas.Add(new Movimiento<T>(ficha.Cara1, ficha, t.Hoja, false));
+                            jugadas.Add(new Movimiento<T>(ficha.Cara2, ficha, t.Hoja, false, ficha.Cara1));
+                            jugadas.Add(new Movimiento<T>(ficha.Cara1, ficha, t.Hoja, false, ficha.Cara2));
                         }
                         continue;
                     }
@@ -28,18 +28,18 @@ public interface IMatcher<T>
 
                     if (matchea(ficha.Cara1, t.Hoja.Entrada))
                     {
-                        jugadas.Add(new Movimiento<T>(ficha.Cara2, ficha, t.Hoja, false));
+                        jugadas.Add(new Movimiento<T>(ficha.Cara2, ficha, t.Hoja, false,ficha.Cara1));
                     }
                     if (matchea(ficha.Cara2, t.Hoja.Entrada))
                     {
-                        jugadas.Add(new Movimiento<T>(ficha.Cara1, ficha, t.Hoja, false));
+                        jugadas.Add(new Movimiento<T>(ficha.Cara1, ficha, t.Hoja, false,ficha.Cara2));
                     }
 
                 }
             }
         }
 
-        if (jugadas.Count == 0) jugadas.Add(new Movimiento<T>(default!, default!, default!, true));
+        if (jugadas.Count == 0) jugadas.Add(new Movimiento<T>(default!, default!, default!, true, default!));
 
         return jugadas;
     }
@@ -63,11 +63,8 @@ public class MatcherClasico : IMatcher<int>
         if (value == value2) return true;
         return false;
     }
-    public bool PuedeSalir(Ficha<int> ficha)
-    {
-        return true;
-
-    }
+    public bool PuedeSalir(Ficha<int> ficha) => true;
+    
 
 
 }
@@ -105,7 +102,7 @@ public class MatcherLongana : IMatcher<int>
         {
             for (int i = 0; i < players - 2; i++)
             {
-                tablero.Ramas.Add(new Tablero<int>(tablero.Ramas[0].Hoja.Entrada, tablero.Ramas[0].Hoja.Turno,
+                tablero.Ramas[0].Ramas.Add(new Tablero<int>(tablero.Ramas[0].Hoja.Entrada, -2,
                 tablero.Ramas[0].Hoja.Ficha, tablero.Ramas[0].Hoja.Player));
             }
             foreach (Tablero<int> rama in tablero.Ramas) rama.Hoja.Jugabilidad = false;

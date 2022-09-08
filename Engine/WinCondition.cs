@@ -63,7 +63,7 @@ public class GanadorPorFichas : IWincondition<int>
         return devolver;
     }
 }
-public class GanadorPorPases : IWincondition<int>
+public class GanadorPorJugadas : IWincondition<int>
 {
     public int DecidirGanador(List<Mano<int>> list, Tablero<int> tablero)
     {
@@ -72,7 +72,7 @@ public class GanadorPorPases : IWincondition<int>
         for (int i = 0; i < list.Count; i++)
         {
             int aux = 0;
-            foreach (Tablero<int> nodo in tablero.Where(x=>x.Hoja.Turno is not -1))
+            foreach (Tablero<int> nodo in tablero.Where(x=>x.Hoja.Turno >=0))
             {
                 if (nodo.Hoja.Player==i) aux++;
             }
