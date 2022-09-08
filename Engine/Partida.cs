@@ -6,12 +6,13 @@ public class Partida<T>
     public List<Player<T>> Players { get; set; }
     private Referee<T> Referee { get; set;}
     public int CurrentPlayer{get;set; }
-    
     public List<Mano<T>> Manos{get; set;}
 
     public Partida()
     {
-        
+        Tablero = new Tablero<T>();
+        Manos = new List<Mano<T>>();
+        Players = new List<Player<T>>();
     }
     public void Run() => Referee.Run();
     public bool RunTurn(){var a = Referee.RunTurn(); CurrentPlayer=Referee.turnEnumerator.Current; return a;}

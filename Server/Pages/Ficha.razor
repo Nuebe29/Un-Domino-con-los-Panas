@@ -1,6 +1,6 @@
 ﻿@using Engine
 
-<div class="Ficha">
+<div class="Ficha" style="grid-column: @colm">
     <div class="Cara1">
         <span>@Board.Hoja.Ficha.Cara1</span> 
     </div>
@@ -13,5 +13,8 @@
 {
     [Parameter] 
     public Tablero<int> Board { get; set; }
+    
+    [Parameter]
+    public int colm { get; set; }
 
 }
