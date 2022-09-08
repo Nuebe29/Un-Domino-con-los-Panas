@@ -56,12 +56,12 @@ public class Referee<T>{
                 {
                     if (jugada.Nodo.Salida)
                     {
-                        t.Ramas.Add(new Tablero<T>(jugada.Ficha.Cara1,0,jugada.Ficha,turnEnumerator.Current));
+                        t.Ramas.Add(new Tablero<T>(jugada.Ficha.Cara1,0,jugada.Ficha,turnEnumerator.Current, jugada.Ficha.Cara2));
                         t.Ramas[0].Hoja.Jugabilidad=false;
-                        t.Ramas[0].Ramas.Add(new Tablero<T>(jugada.Ficha.Cara2,-2,jugada.Ficha,turnEnumerator.Current));
-                        t.Ramas[0].Ramas.Add(new Tablero<T>(jugada.Ficha.Cara1, -2,jugada.Ficha,turnEnumerator.Current));
+                        t.Ramas[0].Ramas.Add(new Tablero<T>(jugada.Ficha.Cara2,-2,jugada.Ficha,turnEnumerator.Current,jugada.Ficha.Cara1));
+                        t.Ramas[0].Ramas.Add(new Tablero<T>(jugada.Ficha.Cara1, -2,jugada.Ficha,turnEnumerator.Current,jugada.Ficha.Cara2));
                     }
-                    else t.Ramas.Add(new Tablero<T>(jugada.Entrada, turno   ,jugada.Ficha,turnEnumerator.Current));          
+                    else t.Ramas.Add(new Tablero<T>(jugada.Entrada, turno   ,jugada.Ficha,turnEnumerator.Current, jugada.Cola));          
                     Matcher.Jugabilidad(t,tablero,turnEnumerator.Current, Players.Count);
 
                 }

@@ -9,16 +9,17 @@ public class Nodo<T>
         Jugabilidad = true;
     }
 
-    public Nodo(T entrada, int turno, Ficha<T> ficha, int player)
+    public Nodo(T entrada, int turno, Ficha<T> ficha, int player,T cola)
     {
         Entrada = entrada;
         Turno = turno;
         Jugabilidad = true;
         Ficha = ficha;
         Player = player;
+        Cola = cola;
     }
 
-    public Nodo<T> Clone() => new Nodo<T>(Entrada!, Turno, Ficha!, Player);
+    public Nodo<T> Clone() => new Nodo<T>(Entrada!, Turno, Ficha!, Player, Cola);
     
     public T? Entrada { get; }
     public int Turno { get; }
@@ -27,13 +28,15 @@ public class Nodo<T>
     public Ficha<T>? Ficha;
     public int Player;
 
+    public T Cola;
+
     
 }
 public class Tablero<T> : IEnumerable<Tablero<T>>
 {
-    public Tablero(T entrada, int turno, Ficha<T> ficha, int player)
+    public Tablero(T entrada, int turno, Ficha<T> ficha, int player,T cola)
     {
-        Hoja = new Nodo<T>(entrada,turno,ficha, player);
+        Hoja = new Nodo<T>(entrada,turno,ficha, player, cola);
         Ramas = new List<Tablero<T>>();
     }
 

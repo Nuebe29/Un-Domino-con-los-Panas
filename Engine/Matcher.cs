@@ -103,7 +103,7 @@ public class MatcherLongana : IMatcher<int>
             for (int i = 0; i < players - 2; i++)
             {
                 tablero.Ramas[0].Ramas.Add(new Tablero<int>(tablero.Ramas[0].Hoja.Entrada, -2,
-                tablero.Ramas[0].Hoja.Ficha, tablero.Ramas[0].Hoja.Player));
+                tablero.Ramas[0].Hoja.Ficha, tablero.Ramas[0].Hoja.Player,tablero.Ramas[0].Hoja.Entrada));
             }
             foreach (Tablero<int> rama in tablero.Ramas) rama.Hoja.Jugabilidad = false;
         }
