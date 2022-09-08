@@ -1,0 +1,17 @@
+﻿@using Engine
+
+<div class="Ficha">
+    <div class="Cara1">
+        <span>@Board.Hoja.Ficha.Cara1</span> 
+    </div>
+    <div class="Cara2">
+        <span>@Board.Hoja.Ficha.Cara2</span>
+    </div>
+</div>
+
+@code 
+{
+    [Parameter] 
+    public Tablero<int> Board { get; set; }
+
+}

@@ -1,0 +1,62 @@
+@page "/"
+@using Engine
+
+<PageTitle>Index</PageTitle>
+
+@if(!isPlaying)
+{
+    _partida = new Partida<int>();
+    
+    <Menu P="_partida"> </Menu>
+    
+    <div style="text-align: center">
+        <input type="button" value="Iniciar Patrida" @onclick="Cambiar">
+    </div>
+}
+
+else
+{
+    if (!isEnded)
+    {
+        <div>
+            <input type="button" value="Siguiente Turno" @onclick="CorrerPartida"/>
+        </div>
+        @foreach (var nodo in _partida.Tablero)
+        {
+            if (nodo.Hoja.Turno != -1)
+            {
+                <Ficha Board="nodo"></Ficha>
+            }
+        }
+    }
+
+    else
+    {
+        <div>
+            La partida ha terminado.
+        </div>
+    }
+    <div style="text-align: center">
+       <input type="button" value="Finalizar Patrida" @onclick="Cambiar">
+   </div> 
+}
+
+@code
+{
+    private bool isPlaying;
+    private bool isEnded;
+    private int turno;
+    private Partida<int> _partida {get; set;}
+
+    void Cambiar()
+    {
+        isPlaying = !isPlaying;
+    }
+
+    void CorrerPartida()
+    {
+        isEnded = _partida.Run(turno++);
+    }
+    
+
+}
