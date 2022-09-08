@@ -24,11 +24,20 @@ else
        
         <div style="text-align: center">
          @{ int count = 1; }
-        @foreach (var nodo in _partida.Tablero)
+         @{ bool volteo = false; }
+        @foreach (var nodo in _partida.Tablero.Pintar(_partida.Tablero))
         {
+            if (nodo.Hoja.Turno == 0) volteo = true;
             if (nodo.Hoja.Turno >= 0)
             {
-                <Ficha Board="nodo" colm="count"></Ficha>
+                if (volteo)
+                {
+                    <Ahcif Board="nodo" colm="count"></Ahcif>
+                }
+                else
+                {
+                    <Ficha Board="nodo" colm="count"></Ficha>
+                }
             }
             count += 1;
         }

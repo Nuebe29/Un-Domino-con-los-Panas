@@ -68,6 +68,32 @@ public class Tablero<T> : IEnumerable<Tablero<T>>
             }
         }
     }
+    
+    public IEnumerable<Tablero<T>> Pintar(Tablero<T> tablero) {
+        List<Tablero<T>> list = new List<Tablero<T>>();
+        var root = tablero;
+        var actual = tablero;
+        list.Add(tablero);
+        while (actual.Ramas.Count is not 0) {
+            actual = actual.Ramas.ElementAt(0);
+            list.Add(actual);
+        }
+        list.Reverse();
+        foreach (var item in list) yield return item;
+        if (root.Ramas.Count is not 0) 
+        {
+            if (root.Ramas[0].Ramas.Count is 2)
+            {
+                actual = root.Ramas[0].Ramas.ElementAt(1);
+                yield return actual; 
+            }
+        }
+        
+        while (actual.Ramas.Count is not 0) {
+            actual = actual.Ramas.ElementAt(0);
+            yield return actual;
+        }
+    }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
